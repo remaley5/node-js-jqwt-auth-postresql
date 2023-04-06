@@ -9,13 +9,13 @@ const sequelize = new Sequelize(
         host: config.HOST, 
         dialect: config.dialect, 
         operatorsAliases: false, 
-        
+
         pool: {
-            max: config.pool.max, 
-            min: config.pool.min, 
-            aquire: config.pool.aquire, 
+            max: config.pool.max,
+            min: config.pool.min,
+            acquire: config.pool.acquire,
             idle: config.pool.idle
-        }
+          }
     }
 );
 
@@ -33,6 +33,13 @@ db.role.belongsToMany(db.user, {
     otherKey: "userId"
 });
 
-db.ROLES = ["user", "admin", "moderators"];
+db.user.belongsToMany(db.role, {
+    through: "user_roles",
+    foreignKey: "userId",
+    otherKey: "roleId"
+  });
+  
+
+db.ROLES = ["user", "admin", "moderator"];
 
 module.exports = db;
